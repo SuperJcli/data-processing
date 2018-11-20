@@ -36,3 +36,10 @@ def split_train_test_by_id(data,test_ratio,id_column,hash=hashlib.md5):
 
 polarSAR_with_id = polarSAR.reset_index() # adds an 'index' column
 train_set,test_set = split_train_test_by_id(polarSAR,0.2,"index")
+
+#数据集划分的另外一种方式
+###################################################################################
+from sklearn.model_selection import train_test_split
+train_set ,test_set = train_test_split(data, test_size = 0.2,random_state=42) 
+#data:your datasets,test_size:ratio of testsets,random_state:随机种子数
+####################################################################################
