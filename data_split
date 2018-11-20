@@ -9,6 +9,23 @@ def loaddata(data_path):
     return pd.read_csv(csv_path)
 
 polarSAR = loaddata(SAR_data)
+
+#数据可视化，分析得到数据的分布
+polarSAR.hist(bins = 50,figsize = (20,15))
+plt.show()
+
+colnm = polarSAR.columns.tolist()
+fig = plt.figure(figsize=(20, 20))
+ 
+for i in range(12):
+    plt.subplot(4, 3, i + 1)
+    sns.boxplot(polarSAR[colnm[i]], orient="v", width=0.2)
+    plt.ylabel(colnm[i], fontsize=20)
+# plt.subplots_adjust(left=0.2, wspace=0.8, top=0.9)
+ 
+plt.tight_layout()
+
+##数据集划分
 def test_set_check(identifier,test_ratio):
     return hash(np.int64(identifier)).digest()[-1] < 256 * test_ratio
 
