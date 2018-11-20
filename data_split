@@ -1,0 +1,21 @@
+import numpy as np
+import pandas as pd
+
+SAR_data = 'D:/SAR_retrieval'
+
+##数据读取
+def loaddata(data_path):
+    csv_path = os.path.join(data_path,'data.csv')
+    return pd.read_csv(csv_path)
+
+polarSAR = loaddata(SAR_data)
+def test_set_check(identifier,test_ratio):
+    return hash(np.int64(identifier)).digest()[-1] < 256 * test_ratio
+
+def split_train_test_by_id(data,test_ratio,id_column,hash=hashlib.md5):
+    ids = data[id_column]
+    in_test_set = ids.apply(lambda id_:test_set_check(id_,test_ratio,hash))
+    return data.loc[~in_test_set],data.loc[in_test_set]
+
+polarSAR_with_id = polarSAR.reset_index() # adds an 'index' column
+train_set,test_set = split_train_test_by_id(polarSAR,0.2,"index")
